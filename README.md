@@ -13,13 +13,21 @@ https://api.telegram.org/bot + {Token} /getUpdates
 
 # ตัวอย่าง การส่งข้อความธรรมดา
 https://api.telegram.org/bot + {Token} /sendMessage
+
 headers: {"contentType":"application/json"}
+
 method: post
+
   {
+  
     chat_id: "YOUR_CHAT_ID",
+    
     text: "ข้อความพร้อมฟอร์แมต *ตัวหนา* และ _ตัวเอียง_",
+    
     parse_mode: "Markdown",
+    
   }
+  
 
 # การส่งข้อมูลในรูปแบบต่างๆ
 1. ส่งข้อความธรรมดา (Text)
