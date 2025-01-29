@@ -1,3 +1,9 @@
+const messagePayload = {
+  chat_id: "YOUR_CHAT_ID",
+  text: "ข้อความพร้อมฟอร์แมต *ตัวหนา* และ _ตัวเอียง_",
+  parse_mode: "Markdown",
+};
+
 const sendTelegramData = async (endpoint, payload) => {
   const token = "YOUR_BOT_TOKEN";
   const url = `https://api.telegram.org/bot${token}${endpoint}`;
