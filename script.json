@@ -1,0 +1,10 @@
+{
+    "chat_id":"{chat_id}",
+    "text":"<<[detail]>>",
+    "parse_mode": "Markdown",
+},
+{
+    "chat_id":"{chat_id}",
+    "photo":"<<[photo]>>",
+    "caption": "รูปภาพ"
+}
