@@ -1,11 +1,9 @@
 # TelegramBot
 การใช้งาน Bot Telegram
 
-@BotFather
-
-/start
-
-/newbot
+@BotFather<br />
+/start<br />
+/newbot<br />
 
 # URL สำหรับเรียกดู chat_id
 https://api.telegram.org/bot + {Token} /getUpdates
