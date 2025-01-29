@@ -11,9 +11,9 @@
 https://api.telegram.org/bot + {Token} /getUpdates
 
 <h2>ตัวอย่าง การส่งข้อความธรรมดา</h2>
-https://api.telegram.org/bot + {Token} /sendMessage
-headers: {"contentType":"application/json"}
-method: post
+https://api.telegram.org/bot + {Token} /sendMessage<br />
+headers: {"contentType":"application/json"}<br />
+method: post<br />
 
 <div style="white-space: pre-wrap;">
   {
