@@ -10,6 +10,7 @@
 # URL สำหรับเรียกดู chat_id
 https://api.telegram.org/bot + {Token} /getUpdates
 
+
 # ตัวอย่าง การส่งข้อความธรรมดา
 https://api.telegram.org/bot + {Token} /sendMessage
 
