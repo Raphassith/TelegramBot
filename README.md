@@ -12,9 +12,9 @@ https://api.telegram.org/bot + {Token} /getUpdates
 
 
 # ตัวอย่าง การส่งข้อความธรรมดา
-https://api.telegram.org/bot + {Token} /sendMessage\n
-headers: {"contentType":"application/json"}\n
-method: post\n
+https://api.telegram.org/bot + {Token} /sendMessage<br />
+headers: {"contentType":"application/json"}<br />
+method: post<br />
 
 ```
   {
@@ -25,79 +25,79 @@ method: post\n
 ```
 
 # การส่งข้อมูลในรูปแบบต่างๆ
-1. ส่งข้อความธรรมดา (Text)
+1. ส่งข้อความธรรมดา (Text)<br />
 Endpoint: /sendMessage
 ```
-const messagePayload = {
+{
   chat_id: "YOUR_CHAT_ID",
   text: "ข้อความพร้อมฟอร์แมต *ตัวหนา* และ _ตัวเอียง_",
   parse_mode: "Markdown",
 };
 ```
 
-2. ส่งรูปภาพ (Photo)
+2. ส่งรูปภาพ (Photo)<br />
 Endpoint: /sendPhoto
 ```
-const photoPayload = {
+{
   chat_id: "YOUR_CHAT_ID",
   photo: "YOUR_IMAGE_URL",
   caption: "รูปภาพพร้อมคำอธิบาย",
 };
 ```
 
-3. ส่งไฟล์เอกสาร (Document)
+3. ส่งไฟล์เอกสาร (Document)<br />
 Endpoint: /sendDocument
 ```
-const documentPayload = {
+{
   chat_id: "YOUR_CHAT_ID",
   document: "YOUR_DOCUMENT_URL",
   caption: "เอกสารตัวอย่าง",
 };
 ```
 
-4. ส่งวิดีโอ (Video)
+4. ส่งวิดีโอ (Video)<br />
 Endpoint: /sendVideo
 ```
-const videoPayload = {
+{
   chat_id: "YOUR_CHAT_ID",
   video: "YOUR_VIDEO_URL",
   caption: "วิดีโอจาก Telegram Bot",
 };
 ```
 
-5. ส่งเสียง (Audio)
+5. ส่งเสียง (Audio)<br />
 Endpoint: /sendAudio
 ```
-const audioPayload = {
+{
   chat_id: "YOUR_CHAT_ID",
   audio: "YOUR_AUDIO_URL",
   caption: "ไฟล์เสียงตัวอย่าง",
 };
 ```
 
-6. ส่งสติกเกอร์ (Sticker)
+6. ส่งสติกเกอร์ (Sticker)<br />
 Endpoint: /sendSticker
 ```
-const stickerPayload = {
+{
   chat_id: "YOUR_CHAT_ID",
   sticker: "YOUR_STICKER_URL",
 };
 ```
 
-7. ส่งพิกัด (Location)
+7. ส่งพิกัด (Location)<br />
 Endpoint: /sendLocation
 ```
-const locationPayload = {
+{
   chat_id: "YOUR_CHAT_ID",
   latitude: 13.7563, // ตัวอย่างพิกัด กรุงเทพ
   longitude: 100.5018,
 };
 ```
 
-8. ส่งโพล (Poll)
+8. ส่งโพล (Poll)<br />
 Endpoint: /sendPoll
 ```
-const pollPayload = {
+{
   chat_id: "YOUR_CHAT_ID",
   question: "คุณชอบผลไม้ชนิดใด?",
   options: JSON.stringify(["มะม่วง", "กล้วย", "แตงโม"]),
@@ -105,10 +105,10 @@ const pollPayload = {
 };
 ```
 
-9. ส่งปุ่มแบบ Inline (Inline Keyboard)
+9. ส่งปุ่มแบบ Inline (Inline Keyboard)<br />
 Endpoint: /sendMessage (พร้อม Inline Keyboard)
 ```
-const inlineKeyboardPayload = {
+{
   chat_id: "YOUR_CHAT_ID",
   text: "เลือกตัวเลือกด้านล่าง",
   reply_markup: JSON.stringify({
@@ -120,10 +120,10 @@ const inlineKeyboardPayload = {
 };
 ```
 
-10. ส่งข้อความพร้อมปุ่มตอบกลับ (Reply Keyboard)
+10. ส่งข้อความพร้อมปุ่มตอบกลับ (Reply Keyboard)<br />
 Endpoint: /sendMessage (พร้อม Reply Keyboard)
 ```
-const replyKeyboardPayload = {
+{
   chat_id: "YOUR_CHAT_ID",
   text: "เลือกคำสั่ง:",
   reply_markup: JSON.stringify({
