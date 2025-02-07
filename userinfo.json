@@ -1,0 +1,9 @@
+{
+    "id": "123456789",
+    "first_name": "John",
+    "last_name": "Doe",
+    "username": "johndoe",
+    "photo_url": "https://t.me/i/userpic/123.jpg",
+    "auth_date": "1700000000",
+    "hash": "abc123xyz"
+}
