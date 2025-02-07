@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login with Telegram</title>
+</head>
+
+<body>
+    <h2>Login with Telegram</h2>
+
+    <div id="user-loading" style="display:block;">
+        <p>กำลังโหลดข้อมูล...</p>
+    </div>
+
+    <div id="user-info" style="display:none;">
+        <h3>ข้อมูลผู้ใช้</h3>
+        <img id="user-photo" src="" alt="Profile Picture" width="100">
+        <p><strong>ชื่อ:</strong> <span id="user-name"></span></p>
+        <p><strong>Telegram ID:</strong> <span id="user-id"></span></p>
+    </div>
+
+    <script async src="https://telegram.org/js/telegram-widget.js?22" 
+      data-telegram-login="YOUR_BOT_USERNAME" 
+      data-size="large" data-onauth="onTelegramAuth(user)" 
+      data-request-access="write">
+    </script>
+    
+    <script type="text/javascript">
+        function onTelegramAuth(user) {
+            // alert('Logged in as ' + user.first_name + ' ' + user.last_name + ' (' + user.id + (user.username ? ', @' + user.username : '') + ')');
+            document.getElementById("user-name").innerText = user.first_name;
+            document.getElementById("user-id").innerText = user.id;
+            document.getElementById("user-photo").src = user.photo_url || "https://via.placeholder.com/100";
+            document.getElementById("user-info").style.display = "block";
+            document.getElementById("user-loading").style.display = "none";
+        }
+    </script>
+</body>
+
+</html>
