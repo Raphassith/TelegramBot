@@ -21,11 +21,14 @@
         <p><strong>Telegram ID:</strong> <span id="user-id"></span></p>
     </div>
 
+    <button id="customLoginButton">🔵 ลงชื่อเข้าใช้ด้วย Telegram</button>
+
     <!-- @BotFather -> /mybots -> @botName -> Bot Settings -> Domain -> Set Domain -> Entry Domain For Web Login -->
     <script async src="https://telegram.org/js/telegram-widget.js?22" 
-      data-telegram-login="YOUR_BOT_USERNAME" 
-      data-size="large" data-onauth="onTelegramAuth(user)" 
-      data-request-access="write">
+        data-telegram-login="YOUR_BOT_USERNAME" 
+        data-size="large" data-onauth="onTelegramAuth(user)" 
+        data-request-access="write"
+        id="telegram-login">
     </script>
     
     <script type="text/javascript">
@@ -37,6 +40,12 @@
             document.getElementById("user-info").style.display = "block";
             document.getElementById("user-loading").style.display = "none";
         }
+    </script>
+    
+    <script>
+        document.getElementById("customLoginButton").addEventListener("click", function() {
+            document.getElementById("telegram-login").click(); // คลิกปุ่ม Telegram อัตโนมัติ
+        });
     </script>
 </body>
 
