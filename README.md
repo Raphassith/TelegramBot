@@ -345,11 +345,10 @@ function doPost(e) {
 }
 ```
 
-**Dialogflow Fulfillment** รองรับการส่งข้อมูลกลับในรูปแบบอื่นๆ นอกเหนือจาก **`fulfillmentText`** เช่น **Rich Responses (JSON), Quick Replies, Cards, Images, Inline Keyboard (Telegram), และ Custom Payloads**  
-
 ---
 
 # **📌 วิธีส่งรูปแบบต่างๆ ผ่าน Fulfillment (Webhook)**
+**Dialogflow Fulfillment** รองรับการส่งข้อมูลกลับในรูปแบบอื่นๆ นอกเหนือจาก **`fulfillmentText`** เช่น **Rich Responses (JSON), Quick Replies, Cards, Images, Inline Keyboard (Telegram), และ Custom Payloads**  
 ใน **Google Apps Script** หรือ **Webhook Server**, คุณสามารถใช้ `fulfillmentMessages` แทน `fulfillmentText` เพื่อส่งข้อความที่ซับซ้อนขึ้น  
 
 ---
