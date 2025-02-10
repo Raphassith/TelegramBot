@@ -344,3 +344,113 @@ function doPost(e) {
   return ContentService.createTextOutput("OK").setMimeType(ContentService.MimeType.TEXT);
 }
 ```
+
+**Dialogflow Fulfillment** รองรับการส่งข้อมูลกลับในรูปแบบอื่นๆ นอกเหนือจาก **`fulfillmentText`** เช่น **Rich Responses (JSON), Quick Replies, Cards, Images, Inline Keyboard (Telegram), และ Custom Payloads**  
+
+---
+
+# **📌 วิธีส่งรูปแบบต่างๆ ผ่าน Fulfillment (Webhook)**
+ใน **Google Apps Script** หรือ **Webhook Server**, คุณสามารถใช้ `fulfillmentMessages` แทน `fulfillmentText` เพื่อส่งข้อความที่ซับซ้อนขึ้น  
+
+---
+
+## **🔹 1. ส่งข้อความ + ปุ่มกด (Inline Keyboard)**
+🔹 ส่งปุ่มให้คล้าย **Flex Message** บน Telegram  
+
+```google app script
+function doPost(e) {
+  var request = JSON.parse(e.postData.contents);
+  
+  if (request.queryResult) {
+    var chat_id = request.originalDetectIntentRequest.payload.data.chat.id;  
+    var message = "✨ โปรโมชั่นพิเศษ! ✨\nกดปุ่มด้านล่างเพื่อดูรายละเอียดเพิ่มเติม";
+
+    var response = {
+      "payload": {
+        "telegram": {
+          "text": message,
+          "reply_markup": {
+            "inline_keyboard": [
+              [{ "text": "📌 ดูรายละเอียด", "url": "https://www.example.com" }],
+              [{ "text": "📞 ติดต่อเรา", "callback_data": "contact_us" }]
+            ]
+          }
+        }
+      }
+    };
+
+    return ContentService.createTextOutput(JSON.stringify(response))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+  
+  return ContentService.createTextOutput("OK");
+}
+```
+✅ **เมื่อบอทตอบกลับ ผู้ใช้จะเห็นปุ่มที่สามารถกดได้**  
+
+---
+
+## **🔹 2. ส่งรูปภาพ (Image Response)**
+🔹 หากต้องการให้บอทตอบกลับเป็นรูปภาพ สามารถใช้ **custom payload**  
+
+```google app script
+function doPost(e) {
+  var request = JSON.parse(e.postData.contents);
+
+  if (request.queryResult) {
+    var response = {
+      "payload": {
+        "telegram": {
+          "photo": "https://example.com/promotion.jpg",
+          "caption": "🔥 โปรโมชั่นสุดพิเศษ! 🔥"
+        }
+      }
+    };
+
+    return ContentService.createTextOutput(JSON.stringify(response))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+  
+  return ContentService.createTextOutput("OK");
+}
+```
+✅ **เหมาะสำหรับ:** ส่งรูปโปรโมชัน หรือข้อมูลภาพ  
+
+---
+
+## **🔹 3. ส่งข้อความแบบ Markdown / HTML**
+🔹 ทำให้ข้อความดูสวยงามขึ้น  
+
+```google app script
+function doPost(e) {
+  var request = JSON.parse(e.postData.contents);
+
+  if (request.queryResult) {
+    var response = {
+      "payload": {
+        "telegram": {
+          "text": "<b>🔥 โปรโมชั่น! 🔥</b>\n<i>วันนี้ลด 50%</i>\n<a href='https://www.example.com'>คลิกดูรายละเอียด</a>",
+          "parse_mode": "HTML"
+        }
+      }
+    };
+
+    return ContentService.createTextOutput(JSON.stringify(response))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+  
+  return ContentService.createTextOutput("OK");
+}
+```
+✅ **เหมาะสำหรับ:** ข้อความที่ต้องการการจัดรูปแบบ เช่น **ตัวหนา, ตัวเอียง, ลิงก์**  
+
+---
+
+# **✅ สรุป**
+| **รูปแบบที่ใช้** | **Telegram รองรับ?** | **ตัวอย่าง** |
+|------------------|-----------------|-------------|
+| `fulfillmentText` (ข้อความธรรมดา) | ✅ | `"fulfillmentText": "Hello!"` |
+| **Inline Keyboard (ปุ่มกด)** | ✅ | ใช้ `"reply_markup"` |
+| **Image Response (ส่งรูป)** | ✅ | ใช้ `"photo"` |
+| **Markdown / HTML (จัดรูปแบบข้อความ)** | ✅ | ใช้ `"parse_mode": "HTML"` |
+| **Custom Payload (JSON)** | ✅ | ใช้ `"payload": { "telegram": {...} }` |
