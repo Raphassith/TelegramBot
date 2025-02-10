@@ -357,7 +357,7 @@ function doPost(e) {
 ## **🔹 1. ส่งข้อความ + ปุ่มกด (Inline Keyboard)**
 🔹 ส่งปุ่มให้คล้าย **Flex Message** บน Telegram  
 
-```google app script
+```
 function doPost(e) {
   var request = JSON.parse(e.postData.contents);
   
@@ -393,7 +393,7 @@ function doPost(e) {
 ## **🔹 2. ส่งรูปภาพ (Image Response)**
 🔹 หากต้องการให้บอทตอบกลับเป็นรูปภาพ สามารถใช้ **custom payload**  
 
-```google app script
+```
 function doPost(e) {
   var request = JSON.parse(e.postData.contents);
 
@@ -421,7 +421,7 @@ function doPost(e) {
 ## **🔹 3. ส่งข้อความแบบ Markdown / HTML**
 🔹 ทำให้ข้อความดูสวยงามขึ้น  
 
-```google app script
+```
 function doPost(e) {
   var request = JSON.parse(e.postData.contents);
 
