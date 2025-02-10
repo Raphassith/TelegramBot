@@ -9,6 +9,22 @@
 https://api.telegram.org/bot + {Token} /getUpdates
 
 
+# URL สำหรับเรียกดูข้อมูล USER
+https://api.telegram.org/bot + {Token} /getChat?chat_id= + {USER_ID}<br />
+
+```
+{
+  "ok": true,
+  "result": {
+    "id": 123456789,
+    "first_name": "John",
+    "last_name": "Doe",
+    "username": "johndoe",
+    "type": "private"
+  }
+}
+```
+
 # ตัวอย่าง การส่งข้อความธรรมดา
 https://api.telegram.org/bot + {Token} /sendMessage<br />
 headers: {"contentType":"application/json"}<br />
@@ -132,5 +148,199 @@ Endpoint: /sendMessage (พร้อม Reply Keyboard)
     resize_keyboard: true,
     one_time_keyboard: true,
   }),
+}
+```
+
+11. ส่งข้อความ Markdown / HTML (เหมือน Flex Text)<br />
+Endpoint: /sendMessage (HTML CODE)
+```
+{
+  chat_id: chat_id,
+  text: "<b>🔥 โปรโมชั่นพิเศษ! 🔥</b>\n" + "<i>เลือกตัวเลือกด้านล่าง:</i>\n" + "✅ <b>ส่วนลด 50%</b>\n" + "✅ <b>ส่งฟรี!</b>\n" + "<a href='https://www.example.com'>🔗 ดูรายละเอียด</a>",
+  parse_mode: "HTML"
+}
+```
+
+# ตั้งค่า Webhook ให้ Telegram Bot
+https://api.telegram.org/bot + {Token} /setWebhook?url= + {YOUR_WEBHOOK_URL}<br />
+
+```
+// google app script
+
+function doPost(e) {
+  var sheet = SpreadsheetApp.openById("YOUR_SHEET_ID").getSheetByName("Sheet1");
+  var data = JSON.parse(e.postData.contents);
+  
+  if (data.message) {
+    var chat_id = data.message.chat.id;
+    var user_name = data.message.from.username || "No Username";
+    var text = data.message.text;
+    var timestamp = new Date();
+    
+    sheet.appendRow([timestamp, chat_id, user_name, text]);
+  }
+  
+  return ContentService.createTextOutput(JSON.stringify({status: "success"}))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+```
+
+#ส่งข้อความต้อนรับเมื่อผู้ใช้เริ่มต้น (/start)
+```
+// google app script
+
+function doPost(e) {
+  var data = JSON.parse(e.postData.contents);
+  
+  if (data.message) {
+    var chat_id = data.message.chat.id;
+    var text = data.message.text;
+
+    if (text === "/start") {
+      var welcomeMessage = "👋 สวัสดี! ฉันคือบอทของคุณ พิมพ์ข้อความมาได้เลย!";
+      sendMessage(chat_id, welcomeMessage);
+    }
+  }
+  
+  return ContentService.createTextOutput(JSON.stringify({status: "success"}))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// ฟังก์ชันส่งข้อความกลับไปหา Telegram
+function sendMessage(chat_id, text) {
+  var token = "YOUR_BOT_TOKEN";
+  var url = "https://api.telegram.org/bot" + token + "/sendMessage";
+  
+  var payload = {
+    "chat_id": chat_id,
+    "text": text
+  };
+  
+  var options = {
+    "method": "post",
+    "contentType": "application/json",
+    "payload": JSON.stringify(payload)
+  };
+  
+  UrlFetchApp.fetch(url, options);
+}
+```
+
+#ส่งข้อความต้อนรับเมื่อผู้ใช้เข้ากลุ่ม
+เพิ่มโค้ดนี้ในฟังก์ชัน doPost(e):<br />
+
+```
+// google app script
+
+if (data.message && data.message.new_chat_members) {
+  var chat_id = data.message.chat.id;
+  var new_members = data.message.new_chat_members;
+  
+  new_members.forEach(member => {
+    var welcomeMessage = "🎉 ยินดีต้อนรับ " + member.first_name + " สู่กลุ่ม!";
+    sendMessage(chat_id, welcomeMessage);
+  });
+}
+```
+
+#ฟังก์ชัน Broadcast
+
+```
+// google app script
+
+function broadcastMessage() {
+  var sheet = SpreadsheetApp.openById("YOUR_SHEET_ID").getSheetByName("Users");
+  var data = sheet.getDataRange().getValues();
+  var token = "YOUR_BOT_TOKEN";
+  var url = "https://api.telegram.org/bot" + token + "/sendMessage";
+  var message = "📢 ข้อความประกาศจากบอท!";
+
+  data.forEach(function(row) {
+    var chat_id = row[0];
+
+    var payload = {
+      "chat_id": chat_id,
+      "text": message
+    };
+
+    var options = {
+      "method": "post",
+      "contentType": "application/json",
+      "payload": JSON.stringify(payload)
+    };
+
+    UrlFetchApp.fetch(url, options);
+  });
+}
+```
+
+#ใช้ Dialog flow โดย Fulfillment
+
+```
+// google app script
+
+function doPost(e) {
+  var data = JSON.parse(e.postData.contents);
+  var token = "YOUR_BOT_TOKEN";
+  var dialogflowUrl = "YOUR_DIALOGFLOW_WEBHOOK_URL";
+  
+  if (data.message) {
+    var chat_id = data.message.chat.id;
+    var text = data.message.text;
+    
+    // ส่งข้อความไป Dialogflow
+    var response = UrlFetchApp.fetch(dialogflowUrl, {
+      "method": "post",
+      "contentType": "application/json",
+      "payload": JSON.stringify({"queryInput": {"text": {"text": text, "languageCode": "th"}}})
+    });
+    
+    var result = JSON.parse(response.getContentText());
+    var replyText = result.fulfillmentText || "ขออภัย ฉันไม่เข้าใจ";
+    
+    // ส่งข้อความกลับ Telegram
+    var telegramUrl = "https://api.telegram.org/bot" + token + "/sendMessage";
+    var payload = {
+      "chat_id": chat_id,
+      "text": replyText
+    };
+    
+    UrlFetchApp.fetch(telegramUrl, {
+      "method": "post",
+      "contentType": "application/json",
+      "payload": JSON.stringify(payload)
+    });
+  }
+  
+  return ContentService.createTextOutput("OK");
+}
+```
+
+กรณีมีการแนบ Parameters<br />
+
+```
+// google app script
+
+function doPost(e) {
+  var request = JSON.parse(e.postData.contents);
+
+  if (request.queryResult) {
+    var intent = request.queryResult.intent.displayName;
+    var parameters = request.queryResult.parameters;
+    
+    // ดึงค่าพารามิเตอร์ที่ส่งมา
+    var date = parameters.date || "ไม่ระบุ";
+    var time = parameters.time || "ไม่ระบุ";
+    var name = parameters.person ? parameters.person.name : "ไม่ระบุ";
+    
+    // กำหนดข้อความตอบกลับ
+    var replyText = "📌 การจองของคุณ: \n👤 ชื่อ: " + name + "\n📅 วันที่: " + date + "\n⏰ เวลา: " + time;
+    
+    return ContentService.createTextOutput(JSON.stringify({
+      "fulfillmentText": replyText
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+  
+  return ContentService.createTextOutput("OK").setMimeType(ContentService.MimeType.TEXT);
 }
 ```
